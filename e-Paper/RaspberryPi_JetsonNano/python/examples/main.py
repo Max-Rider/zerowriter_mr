@@ -21,8 +21,6 @@ from PIL import Image, ImageDraw, ImageFont
 from waveshare_epd import epd4in2_V2
 
 from zerowriter import ZeroWriter
-from IT8951 import constants
-from IT8951.display import AutoEPDDisplay
 
 # Instantiate ZeroWriter with the default configuration
 zero_writer = ZeroWriter()
