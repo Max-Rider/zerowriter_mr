@@ -15,7 +15,7 @@ from IT8951 import constants
 from IT8951.display import AutoEPDDisplay
 
 delay = .100 #standard delay v2.2, 2.1 can use 0
-font24 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 18)
+font24 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 26)
 
 disp_width = 1872
 disp_height = 1404
@@ -137,10 +137,10 @@ class ZeroWriter:
         self.input_content = ""
         self.previous_lines = []
         self.needs_display_update = False
-        self.chars_per_line = 32
-        self.lines_on_screen = 12
-        self.font_size = 18
-        self.line_spacing = 22
+        self.chars_per_line = 128
+        self.lines_on_screen = 32
+        self.font_size = 26
+        self.line_spacing = 30
         self.scrollindex = 1
         self.console_message = ""
         self.typing_last_time = 0
