@@ -11,13 +11,20 @@ import subprocess
 from gmailhandle import GmailCredentials
 from PIL import Image, ImageDraw, ImageFont
 
+from IT8951 import constants
+from IT8951.display import AutoEPDDisplay
+
 delay = .100 #standard delay v2.2, 2.1 can use 0
-font24 = ImageFont.truetype('Courier Prime.ttf', 18)
+font24 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 18)
+
+disp_width = 1872
+disp_height = 1404
+cursor_height = 1374
 
 class Menu:
     def __init__(self, display_draw, epd, display_image):
         self.display_draw = display_draw
-        self.epd = epd
+        self.display_epd = epd
         self.display_image = display_image
         self.menu_items = []
         self.selected_item = 0
@@ -50,7 +57,7 @@ class Menu:
 
     def display(self):
 
-        self.display_draw.rectangle((0, 0, 400, 300), fill=255)
+        self.display_draw.rectangle((0, 0, disp_width, disp_height), fill=255)
         y_position = 10
         
         start_index = max(0, self.selected_item - 5)  # Start index for display
@@ -63,8 +70,7 @@ class Menu:
             self.display_draw.text((10, y_position), prefix + item_text, font=font24, fill=0)
             y_position += 30  # Increment Y position for next menu item
 
-        partial_buffer = self.epd.getbuffer(self.display_image)
-        self.epd.display_Partial(partial_buffer)
+        self.display_epd.draw_partial(constants.DisplayModes.DU)
         time.sleep(delay)
 
     def save_as(self):
@@ -89,12 +95,11 @@ class Menu:
         return
 
     def partial_update(self):
-        self.display_draw.rectangle((0, 270, 400, 300), fill=255)  # Clear display
+        self.display_draw.rectangle((0, cursor_height, disp_width, disp_height), fill=255)  # Clear display
         temp_content = self.inputlabel + ": " + self.input_content + self.ending_content
         # Draw input line text
-        self.display_draw.text((10, 270), str(temp_content), font=font24, fill=0)        
-        partial_buffer = self.epd.getbuffer(self.display_image)
-        self.epd.display_Partial(partial_buffer)
+        self.display_draw.text((10, cursor_height), str(temp_content), font=font24, fill=0)
+        self.display_epd.draw_partial(constants.DisplayModes.DU)
         time.sleep(delay)
 
     def getInput(self, prompt, callback):
@@ -111,21 +116,19 @@ class Menu:
 
     def consolemsg(self, text):
         time.sleep(delay)
-        self.display_draw.rectangle((0, 0, 400, 300), fill=255)  # Clear display
+        self.display_draw.rectangle((0, 0, disp_width, disp_height), fill=255)  # Clear display
         temp_content = text
         # Draw input line text
-        self.display_draw.text((0, 150), str(temp_content), font=font24, fill=0)        
-        partial_buffer = self.epd.getbuffer(self.display_image)
-        self.epd.display_Partial(partial_buffer)
+        self.display_draw.text((0, 150), str(temp_content), font=font24, fill=0)
+        self.display_epd.draw_partial(constants.DisplayModes.DU)
         time.sleep(2)
-        self.display_draw.rectangle((0, 0, 400, 300), fill=255)  # Clear display
-        partial_buffer = self.epd.getbuffer(self.display_image)
-        self.epd.display_Partial(partial_buffer)
+        self.display_draw.rectangle((0, 0, disp_width, disp_height), fill=255)  # Clear display
+        self.display_epd.draw_partial(constants.DisplayModes.DU)
         time.sleep(delay)
 
 class ZeroWriter:
     def __init__(self):
-        self.epd = None
+        self.display = None
         self.display_image = None
         self.display_draw = None
         self.display_updating = False
@@ -153,9 +156,12 @@ class ZeroWriter:
         self.doReset = False
 
     def initialize(self):
-        self.epd.init()
-        self.epd.Clear()
-        self.display_image = Image.new('1', (self.epd.width, self.epd.height), 255)
+        
+        self.display = AutoEPDDisplay(vcom=-1.50)
+        self.display.clear()
+        self.display._set_rotate('flip', True)
+        
+        self.display_image = self.display.frame_buf
         self.display_draw = ImageDraw.Draw(self.display_image)
         self.last_display_update = time.time()
 
@@ -168,22 +174,21 @@ class ZeroWriter:
         self.keyboard.on_press(self.handle_key_press, suppress=True) #handles modifiers and shortcuts
         self.keyboard.on_release(self.handle_key_up, suppress=True)
 
-        self.menu = Menu(self.display_draw, self.epd, self.display_image)
+        self.menu = Menu(self.display_draw, self.display, self.display_image)
         self.populate_main_menu()
 
-        self.load_menu = Menu(self.display_draw, self.epd, self.display_image)
+        self.load_menu = Menu(self.display_draw, self.display, self.display_image)
         self.populate_load_menu()
 
-        self.networks_menu = Menu(self.display_draw, self.epd, self.display_image)
+        self.networks_menu = Menu(self.display_draw, self.display, self.display_image)
         self.populate_networks_menu()
 
-        self.gmail_menu = Menu(self.display_draw, self.epd, self.display_image)
+        self.gmail_menu = Menu(self.display_draw, self.display, self.display_image)
         self.populate_gmail_menu()
 
         #second init should catch if initial init has errors.
         time.sleep(.25)
-        self.epd.init()
-        self.epd.Clear()
+        self.display.clear()
         #self.check_nmcli()
 
 
@@ -414,14 +419,12 @@ class ZeroWriter:
         self.hide_menu()
 
     def power_down(self):
-        self.epd.Clear
-        self.display_draw.rectangle((0, 0, 400, 300), fill=255)  # Clear display
+        self.display.clear()
+        self.display_draw.rectangle((0, 0, disp_width, disp_height), fill=255)  # Clear display
         self.display_draw.text((55, 150), "ZeroWriter Powering Off", font=font24, fill=0)
-        partial_buffer = self.epd.getbuffer(self.display_image)
-        self.epd.display_Partial(partial_buffer)
+        self.display.draw_partial(constants.DisplayModes.DU)
         time.sleep(1)
-        self.epd.init()
-        self.epd.Clear()
+        self.display.clear()
         time.sleep(3)
         subprocess.run(['sudo', 'poweroff', '-f'])
 
@@ -478,25 +481,24 @@ class ZeroWriter:
             print(f"QR code saved to {qr_img_save_path}")
 
             # Calculate position to center QR code on the display
-            qr_x = (self.epd.width - qr_img_converted.width) // 2
-            qr_y = (self.epd.height - qr_img_converted.height) // 2
+            qr_x = (disp_width - qr_img_converted.width) // 2
+            qr_y = (disp_height - qr_img_converted.height) // 2
             # Clear the display image
-            self.display_draw.rectangle((0, 0, self.epd.width, self.epd.height), fill=255)
+            self.display_draw.rectangle((0, 0, disp_width, disp_height), fill=255)
             # Paste the QR code onto the display image
             self.display_image.paste(qr_img_converted, (qr_x, qr_y))
             # Update the display with the new image
-            partial_buffer = self.epd.getbuffer(self.display_image)
-            self.epd.display_Partial(partial_buffer)
+            self.display.draw_partial(constants.DisplayModes.DU)
             time.sleep(delay)
         except Exception as e:
             self.menu.consolemsg(e)
 
     def update_display(self):
         self.display_updating = True
-        self.display_draw.rectangle((0, 0, 400, 300), fill=255)
+        self.display_draw.rectangle((0, 0, disp_width, disp_height), fill=255)
         
         # Display the previous lines
-        y_position = 270 - self.line_spacing  # leaves room for cursor input
+        y_position = cursor_height - self.line_spacing  # leaves room for cursor input
 
         #Make a temp array from previous_lines. And then reverse it and display as usual.
         current_line=max(0,len(self.previous_lines)-self.lines_on_screen*self.scrollindex)
@@ -509,13 +511,12 @@ class ZeroWriter:
 
         #Display Console Message
         if self.console_message != "":
-            self.display_draw.rectangle((300, 270, 400, 300), fill=255)
-            self.display_draw.text((200, 270), self.console_message, font=font24, fill=0)
+            self.display_draw.rectangle((disp_height, cursor_height, disp_width, disp_height), fill=255)
+            self.display_draw.text((200, cursor_height), self.console_message, font=font24, fill=0)
             self.console_message = ""
         
         #generate display buffer for display
-        partial_buffer = self.epd.getbuffer(self.display_image)
-        self.epd.display_Partial(partial_buffer)
+        self.display.draw_partial(constants.DisplayModes.DU)
         self.last_display_update = time.time()
         self.display_updating = False
         self.needs_display_update = False
@@ -525,12 +526,11 @@ class ZeroWriter:
         if not self.updating_input_area and self.scrollindex==1:
             self.updating_input_area = True
             cursor_index = self.cursor_position
-            self.display_draw.rectangle((0, 270, 400, 300), fill=255)  # Clear display
+            self.display_draw.rectangle((0, cursor_height, disp_width, disp_height), fill=255)  # Clear display
             temp_content = self.input_content[:cursor_index] + "|" + self.input_content[cursor_index:]
-            self.display_draw.text((10, 270), str(temp_content), font=font24, fill=0)
+            self.display_draw.text((10, cursor_height), str(temp_content), font=font24, fill=0)
             #self.updating_input_area = True
-            partial_buffer = self.epd.getbuffer(self.display_image)
-            self.epd.display_Partial(partial_buffer)
+            self.display.draw_partial(constants.DisplayModes.DU)
             self.updating_input_area = False
 
     def insert_character(self, character):
@@ -650,8 +650,7 @@ class ZeroWriter:
             elif e.name=="backspace" and self.menu==self.load_menu and self.control_active:
                 self.move_to_archive()
             elif e.name == "r" and self.control_active: #ctrl+r slow refresh
-                self.epd.init()
-                self.epd.Clear()
+                self.display.clear()
                 self.menu.display()
             return
         
@@ -773,20 +772,17 @@ class ZeroWriter:
 
     def handle_interrupt(self, signal, frame):
       self.keyboard.unhook_all()
-      self.epd.init()
-      self.epd.Clear()
+      self.display.clear()
       exit(0)
 
     def exit(self):
       self.keyboard.unhook_all()
-      self.epd.init()
-      self.epd.Clear()
+      self.display.clear()
       exit(0)
       
     def loop(self):
         if self.doReset:
-            self.epd.init()
-            self.epd.Clear()
+            self.display.clear()
             self.update_display()
             self.doReset = False
 
