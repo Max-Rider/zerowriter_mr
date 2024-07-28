@@ -11,9 +11,6 @@ import subprocess
 from gmailhandle import GmailCredentials
 from PIL import Image, ImageDraw, ImageFont
 
-from IT8951 import constants
-from IT8951.display import AutoEPDDisplay
-
 delay = .100 #standard delay v2.2, 2.1 can use 0
 font24 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 18)
 
