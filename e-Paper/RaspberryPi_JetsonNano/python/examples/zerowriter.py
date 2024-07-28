@@ -161,6 +161,8 @@ class ZeroWriter:
         self.display.clear()
         self.display._set_rotate('flip', True)
         
+        self.display.epd.wait_display_ready()
+        
         self.display_image = self.display.frame_buf
         self.display_draw = ImageDraw.Draw(self.display_image)
         self.last_display_update = time.time()
