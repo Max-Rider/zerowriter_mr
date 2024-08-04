@@ -167,7 +167,7 @@ class ZeroWriter:
         self.display_draw = ImageDraw.Draw(self.display_image)
         self.last_display_update = time.time()
         
-        print("Height: %d, Width: %d" % self.display.frame_buf.height, self.display.frame_buf.width)
+        print("Height: {self.display.frame_buf.height}, Width: {self.display.frame_buf.width}")
 
         #comment these two lines if you want to keep terminal interupts
         #signal.signal(signal.SIGINT, signal.SIG_IGN)
