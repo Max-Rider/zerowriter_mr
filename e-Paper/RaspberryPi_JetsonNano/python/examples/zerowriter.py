@@ -159,7 +159,7 @@ class ZeroWriter:
         
         self.display = AutoEPDDisplay(vcom=-1.50)
         self.display.clear()
-        self.display._set_rotate('flip', True)
+        #self.display._set_rotate('flip', True)
         
         self.display.epd.wait_display_ready()
         
@@ -802,6 +802,7 @@ class ZeroWriter:
                 self.update_input_area()
 
     def run(self):
+        #self.show_menu() # Boot into menu, need to remove load_file call below
         self.load_file_into_previous_lines("cache.txt")
         while True:
             self.loop()
