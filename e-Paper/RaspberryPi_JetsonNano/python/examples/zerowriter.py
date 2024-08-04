@@ -15,11 +15,11 @@ from IT8951 import constants
 from IT8951.display import AutoEPDDisplay
 
 delay = .100 #standard delay v2.2, 2.1 can use 0
-font24 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 36)
+font24 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 30)
 
 disp_width = 1872
 disp_height = 1404
-cursor_height = 1374
+cursor_height = 1344
 
 class Menu:
     def __init__(self, display_draw, epd, display_image):
@@ -98,7 +98,7 @@ class Menu:
         self.display_draw.rectangle((0, cursor_height, disp_width, disp_height), fill=255)  # Clear display
         temp_content = self.inputlabel + ": " + self.input_content + self.ending_content
         # Draw input line text
-        self.display_draw.text((5, cursor_height), str(temp_content), font=font24, fill=0)
+        self.display_draw.text((10, cursor_height), str(temp_content), font=font24, fill=0)
         self.display_epd.draw_partial(constants.DisplayModes.DU)
         time.sleep(delay)
 
