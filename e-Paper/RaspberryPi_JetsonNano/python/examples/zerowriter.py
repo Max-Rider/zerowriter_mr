@@ -15,11 +15,11 @@ from IT8951 import constants
 from IT8951.display import AutoEPDDisplay
 
 delay = .100 #standard delay v2.2, 2.1 can use 0
-font24 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 26)
+font24 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 36)
 
 disp_width = 1872
 disp_height = 1404
-cursor_height = 1374
+cursor_height = 1354
 
 class Menu:
     def __init__(self, display_draw, epd, display_image):
