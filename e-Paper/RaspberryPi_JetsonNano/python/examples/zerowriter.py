@@ -159,7 +159,7 @@ class ZeroWriter:
         
         self.display = AutoEPDDisplay(vcom=-1.50)
         self.display.clear()
-        self.display._set_rotate('flip', False)
+        self.display._set_rotate(None, False)
         
         self.display.epd.wait_display_ready()
         
