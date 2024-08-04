@@ -19,7 +19,7 @@ font24 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf
 
 disp_width = 1872
 disp_height = 1404
-cursor_height = 1344
+cursor_height = 1304
 
 class Menu:
     def __init__(self, display_draw, epd, display_image):
