@@ -137,8 +137,8 @@ class ZeroWriter:
         self.input_content = ""
         self.previous_lines = []
         self.needs_display_update = False
-        self.chars_per_line = 128
-        self.lines_on_screen = 32
+        self.chars_per_line = 103
+        self.lines_on_screen = 50
         self.font_size = 26
         self.line_spacing = 30
         self.scrollindex = 1
