@@ -19,7 +19,7 @@ font24 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf
 
 disp_width = 1872
 disp_height = 1404
-cursor_height = 1304
+cursor_height = 1374
 
 class Menu:
     def __init__(self, display_draw, epd, display_image):
@@ -98,7 +98,7 @@ class Menu:
         self.display_draw.rectangle((0, cursor_height, disp_width, disp_height), fill=255)  # Clear display
         temp_content = self.inputlabel + ": " + self.input_content + self.ending_content
         # Draw input line text
-        self.display_draw.text((10, cursor_height), str(temp_content), font=font24, fill=0)
+        self.display_draw.text((20, cursor_height), str(temp_content), font=font24, fill=0)
         self.display_epd.draw_partial(constants.DisplayModes.DU)
         time.sleep(delay)
 
