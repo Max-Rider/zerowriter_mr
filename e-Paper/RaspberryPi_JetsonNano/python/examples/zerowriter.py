@@ -788,6 +788,7 @@ class ZeroWriter:
         if self.doReset:
             self.display.clear()
             self.update_display()
+            self.update_input_area()
             self.doReset = False
 
         if self.menu.inputMode and not self.menu.screenupdating:
