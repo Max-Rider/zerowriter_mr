@@ -154,6 +154,7 @@ class ZeroWriter:
         self.server_address = "not active"
         self.cache_file_path = os.path.join(os.path.dirname(__file__), 'data', 'cache.txt')
         self.doReset = False
+        self.currentFile = None
 
     def initialize(self):
         
@@ -263,6 +264,7 @@ class ZeroWriter:
 
             for filename in files:
                 if filename != "cache.txt":
+                    self.currentFile = filename
                     self.load_menu.addItem(filename, lambda f=filename: self.load_file_into_previous_lines(f), None)
         except Exception as e:
             self.load_menu.addItem("Error: "+{e}, self.hide_child_menu, None)
@@ -805,8 +807,8 @@ class ZeroWriter:
                 self.update_input_area()
 
     def run(self):
-        #self.show_menu() # Boot into menu, need to remove load_file call below
-        self.load_file_into_previous_lines("cache.txt")
+        self.show_menu() # Boot into menu, need to remove load_file call below
+        #self.load_file_into_previous_lines("cache.txt")
         while True:
             self.loop()
             # This small sleep prevents zerowriter from consuming 100% cpu
