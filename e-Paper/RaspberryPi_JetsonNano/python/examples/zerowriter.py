@@ -590,11 +590,11 @@ class ZeroWriter:
         self.consolemsg("[Saved]")
 
     def save_as_file(self, userinput):
-        self.hide_menu
-        self.hide_child_menu
+        self.hide_menu()
+        self.hide_child_menu()
         filename = os.path.join(os.path.dirname(__file__), 'data', f'{userinput}.txt')
         self.save_previous_lines(filename, self.previous_lines)
-        self.menu.consolemsg("[Save As: ]" + f'{userinput}.txt')
+        #self.menu.consolemsg("[Save As: ]" + f'{userinput}.txt') #Maybe dont need this...
         #self.consolemsg("[Save As: ]" + f'{userinput}.txt')
 
     def set_gmail_id(self, userinput):
