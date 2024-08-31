@@ -157,7 +157,7 @@ class ZeroWriter:
 
     def initialize(self):
         
-        self.display = AutoEPDDisplay(vcom=-1.50)
+        self.display = AutoEPDDisplay(spi_hz=1000000,vcom=-1.50)
         self.display.clear()
         self.display._set_rotate('flip', True)
         
