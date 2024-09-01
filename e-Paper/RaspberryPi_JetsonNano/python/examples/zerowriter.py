@@ -128,7 +128,7 @@ class Menu:
         self.display_draw.rectangle((0, 0, disp_width, disp_height), fill=255)  # Clear display
         temp_content = text
         # Draw input line text
-        self.display_draw.text((0, 150), str(temp_content), font=font24, fill=0)
+        self.display_draw.text((0, 150), str(temp_content), font=font72, fill=0)
         self.display_epd.draw_partial(constants.DisplayModes.DU)
         time.sleep(2)
         self.display_draw.rectangle((0, 0, disp_width, disp_height), fill=255)  # Clear display
