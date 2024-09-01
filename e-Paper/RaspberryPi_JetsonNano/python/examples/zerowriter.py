@@ -618,7 +618,7 @@ class ZeroWriter:
         timestamp = time.strftime("%m%d")  # Format: MMDD
         prefix = ''.join(self.previous_lines)[:20]
         alphanum_prefix = ''.join(ch for ch in prefix if ch.isalnum())
-        filename = os.path.join(os.path.dirname(__file__), 'data', f'{self.current_file}.txt')
+        filename = os.path.join(os.path.dirname(__file__), 'data', f'{self.current_file}')
         self.previous_lines.append(self.input_content)
         self.save_previous_lines(filename, self.previous_lines)
         self.save_previous_lines(self.cache_file_path, self.previous_lines)
