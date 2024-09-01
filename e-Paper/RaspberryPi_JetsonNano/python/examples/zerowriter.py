@@ -570,6 +570,7 @@ class ZeroWriter:
             temp_content = self.input_content[:cursor_index] + "|" + self.input_content[cursor_index:]
             self.display_draw.text((10, cursor_height), str(temp_content), font=font24, fill=0)
             #self.updating_input_area = True
+            self.display.epd.wait_display_ready()
             self.display.draw_partial(constants.DisplayModes.DU)
             self.updating_input_area = False
 
