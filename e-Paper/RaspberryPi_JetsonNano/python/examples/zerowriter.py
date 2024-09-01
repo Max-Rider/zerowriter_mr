@@ -73,8 +73,6 @@ class Menu:
         
         # Iterate over the range of menu items to display
         for index in range(start_index, end_index):
-            if(self.menu_items[index]['text'] == ""):
-                continue
             prefix = self.selected_item == index and "> " or "  "  # Prefix for selected item
             item_text = self.menu_items[index]['text']  # Get the text of the menu item
             self.display_draw.text((10, y_position), prefix + item_text, font=font72, fill=0)
