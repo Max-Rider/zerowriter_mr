@@ -438,7 +438,7 @@ class ZeroWriter:
             self.input_content = ""
             self.hide_menu()
         else: # We have been editting a file, save it anc create a new file
-            self.save_previous_lines(self.current_file, self.previous_lines)
+            self.save_previous_lines(self.cache_file_path, self.previous_lines)
             self.previous_lines.clear()
             #prompt for new file name
             Menu.save_as()
