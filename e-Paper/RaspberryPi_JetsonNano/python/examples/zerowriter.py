@@ -206,7 +206,7 @@ class ZeroWriter:
         #self.check_nmcli()
 
     def set_current_file(self, filename):
-        self.current_file = filename
+        self.current_file = filename + ".txt"
 
     def get_ssid(self):
         try:
