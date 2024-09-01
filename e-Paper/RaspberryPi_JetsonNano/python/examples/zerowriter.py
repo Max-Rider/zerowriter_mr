@@ -411,7 +411,7 @@ class ZeroWriter:
                 self.input_content = ""
                 self.cursor_position = 0
                 self.current_file = filename
-                print("LOADED FILE IS: {self.current_file}")
+                print("LOADED FILE IS:", f'{self.current_file}')
                 self.consolemsg(filename)
         except Exception as e:
             self.consolemsg(f"[Error loading file]")
