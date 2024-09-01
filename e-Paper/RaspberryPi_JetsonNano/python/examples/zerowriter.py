@@ -73,13 +73,13 @@ class Menu:
         
         # Iterate over the range of menu items to display
         for index in range(start_index, end_index):
+            if(item_text == ""):
+                index += 1
+            
             prefix = self.selected_item == index and "> " or "  "  # Prefix for selected item
             item_text = self.menu_items[index]['text']  # Get the text of the menu item
             self.display_draw.text((10, y_position), prefix + item_text, font=font72, fill=0)
-            if(item_text == ""):
-                y_position += 75*2 # Increment Y position for next menu item, skip blanks
-            else:
-                y_position += 75  # Increment Y position for next menu item
+            y_position += 75  # Increment Y position for next menu item
 
         self.display_epd.draw_partial(constants.DisplayModes.DU)
         time.sleep(delay)
