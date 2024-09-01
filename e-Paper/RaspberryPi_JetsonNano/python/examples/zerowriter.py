@@ -831,8 +831,8 @@ class ZeroWriter:
         
         elif self.needs_display_update and not self.display_updating:
             self.update_display()
-            self.update_input_area()
             self.display.epd.wait_display_ready()
+            self.update_input_area()
             time.sleep(delay) #*2?
             self.typing_last_time = time.time()
 
