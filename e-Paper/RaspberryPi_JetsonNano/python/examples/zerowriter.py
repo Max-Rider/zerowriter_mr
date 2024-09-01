@@ -205,6 +205,8 @@ class ZeroWriter:
         self.display.clear()
         #self.check_nmcli()
 
+    def set_current_file(self, filename):
+        self.current_file = filename
 
     def get_ssid(self):
         try:
@@ -250,7 +252,7 @@ class ZeroWriter:
     def populate_main_menu(self):
         self.menu.menu_items.clear()
         self.menu.addItem("Save As", lambda: self.menu.save_as(), lambda: self.save_as_file(self.menu.input_content))
-        self.menu.addItem("New", lambda: self.new_file(), lambda: self.save_as_file(self.menu.input_content))
+        self.menu.addItem("New", lambda: self.new_file(), lambda: self.set_current_file(self.menu.input_content))
         self.menu.addItem("Load", lambda: self.show_load_menu(), None)
         #self.menu.addItem("", lambda: print(""), None)
         self.menu.addItem("Gmail Yourself", lambda: self.gmail_send(), None)
@@ -273,7 +275,6 @@ class ZeroWriter:
 
             for filename in files:
                 if filename != "cache.txt":
-                    self.currentFile = filename
                     self.load_menu.addItem(filename, lambda f=filename: self.load_file_into_previous_lines(f), None)
         except Exception as e:
             self.load_menu.addItem("Error: "+{e}, self.hide_child_menu, None)
@@ -409,6 +410,8 @@ class ZeroWriter:
                 self.previous_lines = [line.strip() for line in lines]
                 self.input_content = ""
                 self.cursor_position = 0
+                self.current_file = filename
+                print("LOADED FILE IS: {self.current_file}")
                 self.consolemsg(filename)
         except Exception as e:
             self.consolemsg(f"[Error loading file]")
@@ -438,7 +441,8 @@ class ZeroWriter:
             self.input_content = ""
             self.hide_menu()
         else: # We have been editting a file, save it anc create a new file
-            self.save_previous_lines(self.cache_file_path, self.previous_lines)
+            filename = os.path.join(os.path.dirname(__file__), 'data', f'{self.current_file}.txt')
+            self.save_previous_lines(filename, self.previous_lines)
             self.previous_lines.clear()
             #prompt for new file name
             self.menu.save_as()
@@ -614,7 +618,7 @@ class ZeroWriter:
         timestamp = time.strftime("%m%d")  # Format: MMDD
         prefix = ''.join(self.previous_lines)[:20]
         alphanum_prefix = ''.join(ch for ch in prefix if ch.isalnum())
-        filename = os.path.join(os.path.dirname(__file__), 'data', f'{timestamp}_{alphanum_prefix}.txt')
+        filename = os.path.join(os.path.dirname(__file__), 'data', f'{self.current_file}.txt')
         self.previous_lines.append(self.input_content)
         self.save_previous_lines(filename, self.previous_lines)
         self.save_previous_lines(self.cache_file_path, self.previous_lines)
