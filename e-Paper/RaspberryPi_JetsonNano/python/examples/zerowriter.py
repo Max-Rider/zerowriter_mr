@@ -16,6 +16,7 @@ from IT8951.display import AutoEPDDisplay
 
 delay = .100 #standard delay v2.2, 2.1 can use 0
 font24 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 30)
+font72 = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf", 72)
 
 disp_width = 1872
 disp_height = 1404
@@ -74,7 +75,7 @@ class Menu:
         for index in range(start_index, end_index):
             prefix = self.selected_item == index and "> " or "  "  # Prefix for selected item
             item_text = self.menu_items[index]['text']  # Get the text of the menu item
-            self.display_draw.text((10, y_position), prefix + item_text, font=font24, fill=0)
+            self.display_draw.text((10, y_position), prefix + item_text, font=font72, fill=0)
             y_position += 30  # Increment Y position for next menu item
 
         self.display_epd.draw_partial(constants.DisplayModes.DU)
