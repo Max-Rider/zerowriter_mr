@@ -36,6 +36,13 @@ class Menu:
         self.ending_content=""
 
     def addItem(self, text, action, callback):
+        """
+        Adds an item to the list of menu options
+        
+        :param text: The display name of the item
+        :param action: The function to be called
+        :param callback: A callback funtion to run after the selcted action completes
+        """
         self.menu_items.append({'text': text, 'action': action, 'callback': callback})
 
     def up(self):
@@ -61,7 +68,7 @@ class Menu:
         y_position = 10
         
         start_index = max(0, self.selected_item - 5)  # Start index for display
-        end_index = min(len(self.menu_items), start_index + 10)  # End index for display
+        end_index = min(len(self.menu_items), start_index + 30)  # End index for display
         
         # Iterate over the range of menu items to display
         for index in range(start_index, end_index):
@@ -77,6 +84,7 @@ class Menu:
         self.ending_content=""
         self.getInput("File Name", self.input_content)
 
+    
     def get_gmail_id(self):
         self.ending_content="@gmail.com"
         self.getInput("ID", self.input_content)
