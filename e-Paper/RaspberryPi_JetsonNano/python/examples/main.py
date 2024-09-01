@@ -27,7 +27,7 @@ from IT8951.display import AutoEPDDisplay
 zero_writer = ZeroWriter()
 
 try:
-  display = AutoEPDDisplay(spi_hz=20000000, vcom=-1.50)
+  display = AutoEPDDisplay(spi_hz=19000000, vcom=-1.50)
   zero_writer.keyboard = keyboard
   zero_writer.initialize()
   zero_writer.run()
