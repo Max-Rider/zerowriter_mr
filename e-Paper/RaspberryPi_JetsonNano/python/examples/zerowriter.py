@@ -67,7 +67,7 @@ class Menu:
         self.display_draw.rectangle((0, 0, disp_width, disp_height), fill=255)
         y_position = 10
         
-        start_index = max(0, self.selected_item - 5)  # Start index for display
+        start_index = max(0, self.selected_item)  # Start index for display
         end_index = min(len(self.menu_items), start_index + 30)  # End index for display
         
         # Iterate over the range of menu items to display
