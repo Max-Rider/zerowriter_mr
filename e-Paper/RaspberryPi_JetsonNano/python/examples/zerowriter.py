@@ -163,7 +163,7 @@ class ZeroWriter:
         self.server_address = "not active"
         self.cache_file_path = os.path.join(os.path.dirname(__file__), 'data', 'cache.txt')
         self.doReset = False
-        self.currentFile = None
+        self.current_file = None
 
     def initialize(self):
         
@@ -250,7 +250,7 @@ class ZeroWriter:
     def populate_main_menu(self):
         self.menu.menu_items.clear()
         self.menu.addItem("Save As", lambda: self.menu.save_as(), lambda: self.save_as_file(self.menu.input_content))
-        self.menu.addItem("New", lambda: self.new_file(), None)
+        self.menu.addItem("New", lambda: self.new_file(), lambda: self.save_as_file(self.menu.input_content))
         self.menu.addItem("Load", lambda: self.show_load_menu(), None)
         #self.menu.addItem("", lambda: print(""), None)
         self.menu.addItem("Gmail Yourself", lambda: self.gmail_send(), None)
@@ -327,7 +327,6 @@ class ZeroWriter:
         self.gmail_menu.addItem("Enable App Password in 2FA.", lambda: None, None)
         self.gmail_menu.addItem("Use the App Password. Use a", lambda: None, None)
         self.gmail_menu.addItem("new gmail account for security.", lambda: None, None)
-    
 
     def gmail_send(self):
         try:
@@ -427,11 +426,33 @@ class ZeroWriter:
             return []
 
     def new_file(self):
-        self.save_previous_lines(self.cache_file_path, self.previous_lines)
-        self.previous_lines.clear()
-        self.input_content = ""
-        self.consolemsg("[New]")
-        self.hide_menu()
+        """
+        Create a new file for editting
+        """
+        
+        # No file is currently open. AKA we selected this option on boot
+        if(self.current_file == None):
+            self.previous_lines.clear()
+            #prompt for new file name
+            Menu.save_as()
+            self.input_content = ""
+            self.hide_menu()
+        else: # We have been editting a file, save it anc create a new file
+            self.save_previous_lines(self.current_file, self.previous_lines)
+            self.previous_lines.clear()
+            #prompt for new file name
+            Menu.save_as()
+            self.input_content = ""
+            self.hide_menu()
+        
+        
+        
+        
+        #self.save_previous_lines(self.cache_file_path, self.previous_lines)
+        #self.previous_lines.clear()
+        #self.input_content = ""
+        #self.consolemsg("[New]")
+        #self.hide_menu()
 
     def power_down(self):
         self.display.clear()
@@ -625,7 +646,6 @@ class ZeroWriter:
             self.menu.display()
         except Exception as e:
             print(e)
-
 
     def handle_key_press(self, e):
         if e.name == 'ctrl': #if control is pressed
