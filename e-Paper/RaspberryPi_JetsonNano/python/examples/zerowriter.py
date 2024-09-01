@@ -252,13 +252,13 @@ class ZeroWriter:
         self.menu.addItem("Save As", lambda: self.menu.save_as(), lambda: self.save_as_file(self.menu.input_content))
         self.menu.addItem("New", lambda: self.new_file(), None)
         self.menu.addItem("Load", lambda: self.show_load_menu(), None)
-        self.menu.addItem("", lambda: print(""), None)
+        #self.menu.addItem("", lambda: print(""), None)
         self.menu.addItem("Gmail Yourself", lambda: self.gmail_send(), None)
         self.menu.addItem("QR Code", lambda: self.display_qr_code(), None)
         self.menu.addItem("Wifi: " + str(self.get_ssid()), lambda: self.show_networks_menu(), None)
         self.menu.addItem("Gmail Config", lambda: self.show_gmail_menu(), None)
         self.menu.addItem("Files: " + str(self.server_address), lambda: None, None)
-        self.menu.addItem("", lambda: print(""), None)
+        #self.menu.addItem("", lambda: print(""), None)
         self.menu.addItem("Power Off", self.power_down, None)
 
     def populate_load_menu(self):
