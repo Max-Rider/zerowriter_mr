@@ -15,7 +15,7 @@
 #
 
 import time
-import keyboard
+from . import keyboard
 import keymaps
 from PIL import Image, ImageDraw, ImageFont
 
