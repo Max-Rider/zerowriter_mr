@@ -830,6 +830,7 @@ class ZeroWriter:
             self.doReset = False
 
         if self.menu.inputMode and not self.menu.screenupdating:
+            print("MENU INPUT MODE")
             self.menu.partial_update()
         
         elif self.needs_display_update and not self.display_updating:
