@@ -64,7 +64,7 @@ class Menu:
         self.menu_items[self.selected_item]['action']()
 
     def display(self):
-
+        self.display.epd.wait_display_ready()
         self.display_draw.rectangle((0, 0, disp_width, disp_height), fill=255)
         y_position = 10
         
@@ -837,7 +837,6 @@ class ZeroWriter:
             #self.display.epd.wait_display_ready()
             print("NEEDS DISPLAY UPDATE")
             self.update_display()
-            time.sleep(delay)
             #self.display.epd.wait_display_ready()
             self.update_input_area()
             time.sleep(delay) #*2?
@@ -848,6 +847,7 @@ class ZeroWriter:
                 self.update_input_area()
 
     def run(self):
+        print(AutoEPDDisplay.__file__)
         self.show_menu() # Boot into menu, need to remove load_file call below
         #self.load_file_into_previous_lines("cache.txt")
         while True:
