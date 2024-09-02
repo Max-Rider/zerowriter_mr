@@ -834,9 +834,10 @@ class ZeroWriter:
             self.menu.partial_update()
         
         elif self.needs_display_update and not self.display_updating:
-            self.display.epd.wait_display_ready()
+            #self.display.epd.wait_display_ready()
             print("NEEDS DISPLAY UPDATE")
             self.update_display()
+            time.sleep(delay)
             #self.display.epd.wait_display_ready()
             self.update_input_area()
             time.sleep(delay) #*2?
