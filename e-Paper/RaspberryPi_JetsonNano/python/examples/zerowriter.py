@@ -11,6 +11,7 @@ import subprocess
 from gmailhandle import GmailCredentials
 from PIL import Image, ImageDraw, ImageFont
 
+import IT8951
 from IT8951 import constants
 from IT8951.display import AutoEPDDisplay
 
