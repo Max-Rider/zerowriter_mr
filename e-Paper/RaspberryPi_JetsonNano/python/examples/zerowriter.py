@@ -2,7 +2,7 @@ import time
 import keymaps
 import qrcode
 import socket
-from . import keyboard
+import keyboard
 import shutil
 import signal
 import os
