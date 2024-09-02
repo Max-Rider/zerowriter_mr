@@ -11,7 +11,6 @@ import subprocess
 from gmailhandle import GmailCredentials
 from PIL import Image, ImageDraw, ImageFont
 
-import IT8951
 from IT8951 import constants
 from IT8951.display import AutoEPDDisplay
 
@@ -65,7 +64,7 @@ class Menu:
         self.menu_items[self.selected_item]['action']()
 
     def display(self):
-        self.display.epd.wait_display_ready()
+
         self.display_draw.rectangle((0, 0, disp_width, disp_height), fill=255)
         y_position = 10
         
@@ -835,7 +834,6 @@ class ZeroWriter:
             self.menu.partial_update()
         
         elif self.needs_display_update and not self.display_updating:
-            #self.display.epd.wait_display_ready()
             print("NEEDS DISPLAY UPDATE")
             self.update_display()
             #self.display.epd.wait_display_ready()
@@ -848,7 +846,6 @@ class ZeroWriter:
                 self.update_input_area()
 
     def run(self):
-        print(IT8951.__file__)
         self.show_menu() # Boot into menu, need to remove load_file call below
         #self.load_file_into_previous_lines("cache.txt")
         while True:
