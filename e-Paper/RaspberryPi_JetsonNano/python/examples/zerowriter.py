@@ -206,6 +206,7 @@ class ZeroWriter:
         #self.check_nmcli()
 
     def set_current_file(self, filename):
+        print("Setting current file to the given filename: ", f'{filename}')
         self.current_file = filename + ".txt"
 
     def get_ssid(self):
@@ -432,13 +433,17 @@ class ZeroWriter:
         """
         Create a new file for editting
         """
-        
         # No file is currently open. AKA we selected this option on boot
         if(self.current_file == None):
-            self.previous_lines.clear()
+            print("Create new file on boot, no previous lines to save. Clearing previous lines")
+            if len(self.previous_lines) > 0:
+                print("Clearing previous_lines list")
+                self.previous_lines.clear()
             #prompt for new file name
+            print("Running save_as function to get new file name")
             self.menu.save_as()
             self.input_content = ""
+            print("Running hide menu function")
             self.hide_menu()
         else: # We have been editting a file, save it anc create a new file
             filename = os.path.join(os.path.dirname(__file__), 'data', f'{self.current_file}.txt')
@@ -448,10 +453,7 @@ class ZeroWriter:
             self.menu.save_as()
             self.input_content = ""
             self.hide_menu()
-        
-        
-        
-        
+            
         #self.save_previous_lines(self.cache_file_path, self.previous_lines)
         #self.previous_lines.clear()
         #self.input_content = ""
