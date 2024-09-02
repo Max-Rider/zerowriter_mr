@@ -847,7 +847,7 @@ class ZeroWriter:
                 self.update_input_area()
 
     def run(self):
-        print(AutoEPDDisplay.__file__)
+        print(IT8951.__file__)
         self.show_menu() # Boot into menu, need to remove load_file call below
         #self.load_file_into_previous_lines("cache.txt")
         while True:
